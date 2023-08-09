@@ -21,9 +21,10 @@ function App() {
       var data = JSON.parse(event.data);
       console.log(data);
       if (data.op === '10') {
-        setMessage(data.state ? 'On' : 'Off');
+        setMessage(!data.state ? 'On' : 'Off');
         setState(data.state);
-        if (!data.state) {
+        console.log(data.state);
+        if (data.state) {
           document.body.style.backgroundColor = '#fff';
         } else {
           document.body.style.backgroundColor = '#333';
@@ -42,8 +43,8 @@ function App() {
   const ButClick = () => {
     setState(!state);
     socketRef.current.send(JSON.stringify({ op: '1', data: { state: state } }));
-    setMessage(!state ? 'On' : 'Off');
-    setButtonClass(state ? 'on-button' : 'off-button');
+    setMessage(state ? 'On' : 'Off');
+    setButtonClass(!state ? 'on-button' : 'off-button');
     if (state) {
       document.body.style.backgroundColor = '#fff';
     } else {
