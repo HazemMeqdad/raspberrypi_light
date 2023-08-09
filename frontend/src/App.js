@@ -14,14 +14,20 @@ function App() {
     // Connection opened
     socketRef.current.addEventListener('open', () => {
       console.log('Connected to WebSocket server');
+      socketRef.current.send(JSON.stringify({ op: '0' }));
     });
 
-     // Listen for messages
-     socketRef.current.addEventListener('message', (event) => {
+    socketRef.current.addEventListener('message', (event) => {
       var data = JSON.parse(event.data);
+      console.log(data);
       if (data.op === '10') {
         setMessage(data.state ? 'On' : 'Off');
         setState(data.state);
+        if (!data.state) {
+          document.body.style.backgroundColor = '#fff';
+        } else {
+          document.body.style.backgroundColor = '#333';
+        }
       }
     });
 
@@ -38,12 +44,17 @@ function App() {
     socketRef.current.send(JSON.stringify({ op: '1', data: { state: state } }));
     setMessage(!state ? 'On' : 'Off');
     setButtonClass(state ? 'on-button' : 'off-button');
+    if (state) {
+      document.body.style.backgroundColor = '#fff';
+    } else {
+      document.body.style.backgroundColor = '#333';
+    }
   }
   return (
     <>
     <div>
       <div class="center-container">
-          <button onClick={()=> ButClick()} className={"centered-button "+{buttonClass}}>
+          <button onClick={()=> ButClick()} className={buttonClass} >
               <span>{message}</span>
           </button>
       </div>

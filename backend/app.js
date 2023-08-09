@@ -9,6 +9,7 @@ const wss = new WebSocket.Server({ port: 8080 });
 
 
 wss.on("connection", ws => {
+    console.log('Connected to WebSocket server');
     read_state()
         .then((content) => {
             ws.send(JSON.stringify({ 
