@@ -2,16 +2,11 @@ const express = require('express');
 const WebSocket = require('ws');
 const http = require('http');
 const { read_state, write_state } = require('./state');
-const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ port: 8080 });
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../index.html'));
-    
-})
 
 wss.on("connection", ws => {
     read_state()
